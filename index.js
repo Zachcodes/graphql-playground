@@ -7,16 +7,22 @@ const students = require('./students')
 const app = express();
 
 const typeDefs = gql`
-  type Query {
-    "A simple type for getting started!"
-    hello: String
-  }
+ type Student {
+   name: String
+   age: Int
+ }
+
+ type Query {
+   student: Student
+ }
 `;
 
 // A map of functions which return data for the schema.
 const resolvers = {
-  Query: {
-    hello: () => 'world'
+  Student: {
+    students(name) {
+      return find(students, {name: name})
+    }
   }
 };
 
