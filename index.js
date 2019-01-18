@@ -4,36 +4,22 @@ const { find, filter } = require('lodash')
 const students = require('./students')
 
 
-const app = express()
+const app = express();
 
-
-const schema = gql`
-  type Book {
-    title: String
-    author: Author
-  }
-
-  type Author {
-    books: [Book]
-  }
-
+const typeDefs = gql`
   type Query {
-    author: Author
+    "A simple type for getting started!"
+    hello: String
   }
 `;
 
+// A map of functions which return data for the schema.
 const resolvers = {
   Query: {
-    author(parent, args, context, info) {
-      return find(authors, { id: args.id });
-    },
-  },
-  Author: {
-    books(author) {
-      return filter(books, { author: author.name });
-    },
-  },
+    hello: () => 'world'
+  }
 };
+
 
 const server = new ApolloServer({ typeDefs, resolvers });
 server.applyMiddleware({ app });

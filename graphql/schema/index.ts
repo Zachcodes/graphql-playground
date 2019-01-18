@@ -1,11 +1,11 @@
-import { makeExecutableSchema } from 'apollo-server-express';
+const { makeExecutableSchema } = require('apollo-server-express')
 
-import resolvers from './resolvers'
-import typeDefs from './typeDefs'
+const mergedResolvers = require('./resolvers') 
+const typeDefs = require('./typeDefs')
 
 const schema = makeExecutableSchema({
-    resolvers,
+    mergedResolvers,
     typeDefs
 })
 
-export default schema;
+module.exports = schema;
