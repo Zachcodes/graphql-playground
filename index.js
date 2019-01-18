@@ -1,20 +1,38 @@
 const express = require('express')
 const { ApolloServer, gql } = require('apollo-server-express');
-const massive = require('massive')
+const { find, filter } = require('lodash')
+const students = require('./students')
+
 
 const app = express()
 
 
-const typeDefs = gql`
+const schema = gql`
+  type Book {
+    title: String
+    author: Author
+  }
+
+  type Author {
+    books: [Book]
+  }
+
   type Query {
-    hello: String
+    author: Author
   }
 `;
 
 const resolvers = {
-    Query: {
-      hello: () => 'Hello world!',
+  Query: {
+    author(parent, args, context, info) {
+      return find(authors, { id: args.id });
     },
+  },
+  Author: {
+    books(author) {
+      return filter(books, { author: author.name });
+    },
+  },
 };
 
 const server = new ApolloServer({ typeDefs, resolvers });
